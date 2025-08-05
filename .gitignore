@@ -30,9 +30,17 @@ pnpm-debug.log*
 .DS_Store
 
 # 浏览器状态文件
-browser-state.json
-browser-state-fingerprint.json
-src/mcp-server.ts
-.iter_plan.md
-.iter_process.md
+browser-state*.json
+*browser-state*.json
+.google-search-browser-state.json
+.kagi-search-browser-state.json
+
+# HTML 输出和截图
 google-search-html/
+kagi-search-html/
+kagi-search-*.html
+kagi-search-*.png
+
+# 其他可能的状态文件
+*.state
+*.session

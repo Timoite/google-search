@@ -1,42 +1,52 @@
-# Google 搜索工具
+# Kagi 搜索工具
 
-这是一个基于 Playwright 的 Node.js 工具，能够绕过搜索引擎的反爬虫机制，执行 Google 搜索并提取结果。它可作为命令行工具直接使用，或通过 Model Context Protocol (MCP) 服务器为 Claude 等 AI 助手提供实时搜索能力。
+这是一个基于 Playwright 的 Node.js 工具，为 Kagi 搜索引擎提供访问接口。Kagi 是一个注重隐私、无广告的搜索引擎，提供高质量的搜索结果。此工具可作为命令行工具直接使用，或通过 Model Context Protocol (MCP) 服务器为 Claude 等 AI 助手提供实时搜索能力。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=web-agent-master/google-search&type=Date)](https://star-history.com/#web-agent-master/google-search&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=web-agent-master/kagi-search&type=Date)](https://star-history.com/#web-agent-master/kagi-search&Date)
 
 ## 核心亮点
 
-- **本地化 SERP API 替代方案**：无需依赖付费的搜索引擎结果 API 服务，完全在本地执行搜索操作
-- **先进的反机器人检测绕过技术**：
+- **Kagi 搜索集成**：访问 Kagi 高质量、无广告的搜索结果
+- **注重隐私**：利用 Kagi 隐私优先的搜索方式
+- **基于令牌的认证**：使用您的 Kagi 搜索令牌进行安全访问
+- **先进的浏览器自动化**：
   - 智能浏览器指纹管理，模拟真实用户行为
-  - 自动保存和恢复浏览器状态，减少验证频率
-  - 无头/有头模式智能切换，遇到验证时自动转为有头模式让用户完成验证
-  - 多种设备和区域设置随机化，降低被检测风险
-- **原始HTML获取**：能够获取搜索结果页面的原始HTML（已移除CSS和JavaScript），用于分析和调试Google页面结构变化时的提取策略
+  - 自动保存和恢复浏览器状态
+  - 需要时智能切换无头/有头模式
+  - 多种设备和区域设置随机化
+- **原始HTML获取**：能够获取搜索结果页面的原始HTML用于分析
 - **网页截图功能**：在保存HTML内容的同时，自动捕获并保存完整网页截图
-- **MCP 服务器集成**：为 Claude 等 AI 助手提供实时搜索能力，无需额外 API 密钥
-- **完全开源免费**：所有代码开源，无使用限制，可自由定制和扩展
+- **MCP 服务器集成**：为 Claude 等 AI 助手提供实时搜索能力
+- **完全开源免费**：所有代码开源，无使用限制
 
 ## 技术特性
 
 - 使用 TypeScript 开发，提供类型安全和更好的开发体验
 - 基于 Playwright 实现浏览器自动化，支持多种浏览器引擎
 - 支持命令行参数输入搜索关键词
-- 支持作为 MCP 服务器，为 Claude 等 AI 助手提供搜索能力
+- 支持作为 MCP 服务器，为 AI 助手提供搜索能力
 - 返回搜索结果的标题、链接和摘要
 - 支持获取搜索结果页面的原始HTML用于分析
 - 以 JSON 格式输出结果
 - 支持无头模式和有头模式（调试用）
 - 提供详细的日志输出
 - 健壮的错误处理机制
-- 支持保存和恢复浏览器状态，有效避免反机器人检测
+- 支持环境变量管理令牌安全
+
+## 前置要求
+
+在使用此工具之前，您需要获取 Kagi 搜索令牌：
+
+1. 访问 [Kagi.com](https://kagi.com) 并创建账户
+2. 在账户设置中找到您的搜索令牌
+3. 请保证此令牌的安全，因为它提供对您 Kagi 搜索配额的访问
 
 ## 安装
 
 ```bash
 # 从源码安装
-git clone https://github.com/web-agent-master/google-search.git
-cd google-search
+git clone https://github.com/web-agent-master/kagi-search.git
+cd kagi-search
 # 安装依赖
 npm install
 # 或使用 yarn
@@ -59,6 +69,22 @@ yarn link
 pnpm link
 ```
 
+## 设置
+
+在使用工具之前，您需要设置 Kagi 令牌：
+
+1. **创建 `.env` 文件**（在项目根目录）：
+```bash
+cp .env.example .env
+```
+
+2. **编辑 `.env` 文件**并添加您的 Kagi 令牌：
+```env
+KAGI_TOKEN=your_actual_kagi_token_here
+```
+
+3. **保护您的令牌安全**：切勿将 `.env` 文件提交到版本控制中。
+
 ### Windows 环境特别说明
 
 在 Windows 环境下，本工具已经做了特殊适配：
@@ -74,14 +100,13 @@ pnpm link
 
 ```bash
 # 直接使用命令行
-google-search "搜索关键词"
+kagi-search "搜索关键词"
 
 # 使用命令行选项
-google-search --limit 5 --timeout 60000 --no-headless "搜索关键词"
-
+kagi-search --limit 5 --timeout 60000 --no-headless "搜索关键词"
 
 # 或者使用 npx
-npx google-search-cli "搜索关键词"
+npx kagi-search-cli "搜索关键词"
 
 # 开发模式运行
 pnpm dev "搜索关键词"
@@ -90,13 +115,13 @@ pnpm dev "搜索关键词"
 pnpm debug "搜索关键词"
 
 # 获取搜索结果页面的原始HTML
-google-search "搜索关键词" --get-html
+kagi-search "搜索关键词" --get-html
 
 # 获取HTML并保存到文件
-google-search "搜索关键词" --get-html --save-html
+kagi-search "搜索关键词" --get-html --save-html
 
 # 获取HTML并保存到指定文件
-google-search "搜索关键词" --get-html --save-html --html-output "./输出.html"
+kagi-search "搜索关键词" --get-html --save-html --html-output "./输出.html"
 ```
 
 #### 命令行选项
@@ -104,10 +129,8 @@ google-search "搜索关键词" --get-html --save-html --html-output "./输出.h
 - `-l, --limit <number>`: 结果数量限制（默认：10）
 - `-t, --timeout <number>`: 超时时间（毫秒，默认：60000）
 - `--no-headless`: 显示浏览器界面（调试用）
-- `--remote-debugging-port <number>`: 启用远程调试端口（默认：9222）
 - `--state-file <path>`: 浏览器状态文件路径（默认：./browser-state.json）
 - `--no-save-state`: 不保存浏览器状态
-- `--get-html`: 获取搜索结果页面的原始HTML而不是解析结果
 - `--save-html`: 将HTML保存到文件（与--get-html一起使用）
 - `--html-output <path>`: 指定HTML输出文件路径（与--get-html和--save-html一起使用）
 - `-V, --version`: 显示版本号
@@ -189,9 +212,9 @@ pnpm build
 ```json
 {
   "mcpServers": {
-    "google-search": {
+    "kagi-search": {
       "command": "npx",
-      "args": ["google-search-mcp"]
+      "args": ["kagi-search-mcp"]
     }
   }
 }
@@ -204,9 +227,9 @@ Windows 环境下，也可以使用以下配置方案：
 ```json
 {
   "mcpServers": {
-    "google-search": {
+    "kagi-search": {
       "command": "cmd.exe",
-      "args": ["/c", "npx", "google-search-mcp"]
+      "args": ["/c", "npx", "kagi-search-mcp"]
     }
   }
 }

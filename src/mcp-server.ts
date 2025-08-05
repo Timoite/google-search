@@ -1,33 +1,37 @@
 #!/usr/bin/env node
 
+import { config } from "dotenv";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { googleSearch, getGoogleSearchPageHtml } from "./search.js";
+import { kagiSearch, getKagiSearchPageHtml } from "./search.js";
 import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
 import logger from "./logger.js";
 import { chromium, Browser } from "playwright";
 
+// 加载环境变量
+config();
+
 // 全局浏览器实例
 let globalBrowser: Browser | undefined = undefined;
 
 // 创建MCP服务器实例
 const server = new McpServer({
-  name: "google-search-server",
+  name: "kagi-search-server",
   version: "1.0.0",
 });
 
-// 注册Google搜索工具
+// 注册Kagi搜索工具
 server.tool(
-  "google-search",
-  "使用Google搜索引擎查询实时网络信息，返回包含标题、链接和摘要的搜索结果。适用于需要获取最新信息、查找特定主题资料、研究当前事件或验证事实的场景。结果以JSON格式返回，包含查询内容和匹配结果列表。",
+  "kagi-search",
+  "使用Kagi搜索引擎查询实时网络信息，返回包含标题、链接和摘要的搜索结果。Kagi是一个注重隐私的搜索引擎，提供高质量、无广告的搜索结果。适用于需要获取最新信息、查找特定主题资料、研究当前事件或验证事实的场景。结果以JSON格式返回，包含查询内容和匹配结果列表。",
   {
     query: z
       .string()
       .describe(
-        "搜索查询字符串。为获得最佳结果：1)优先使用英语关键词搜索，因为英语内容通常更丰富、更新更及时，特别是技术和学术领域；2)使用具体关键词而非模糊短语；3)可使用引号\"精确短语\"强制匹配；4)使用site:域名限定特定网站；5)使用-排除词过滤结果；6)使用OR连接备选词；7)优先使用专业术语；8)控制在2-5个关键词以获得平衡结果；9)根据目标内容选择合适的语言（如需要查找特定中文资源时再使用中文）。例如:'climate change report 2024 site:gov -opinion' 或 '\"machine learning algorithms\" tutorial (Python OR Julia)'"
+        "搜索查询字符串。为获得最佳结果：1)使用具体关键词而非模糊短语；2)可使用引号\"精确短语\"强制匹配；3)使用site:域名限定特定网站；4)使用-排除词过滤结果；5)使用OR连接备选词；6)优先使用专业术语；7)控制在2-5个关键词以获得平衡结果。例如:'climate change report 2024 site:gov -opinion' 或 '\"machine learning algorithms\" tutorial (Python OR Julia)'"
       ),
     limit: z
       .number()
@@ -41,12 +45,12 @@ server.tool(
   async (params) => {
     try {
       const { query, limit, timeout } = params;
-      logger.info({ query }, "执行Google搜索");
+      logger.info({ query }, "执行Kagi搜索");
 
       // 获取用户主目录下的状态文件路径
       const stateFilePath = path.join(
         os.homedir(),
-        ".google-search-browser-state.json"
+        ".kagi-search-browser-state.json"
       );
       logger.info({ stateFilePath }, "使用状态文件路径");
 
@@ -63,7 +67,7 @@ server.tool(
       }
 
       // 使用全局浏览器实例执行搜索
-      const results = await googleSearch(
+      const results = await kagiSearch(
         query,
         {
           limit: limit,
@@ -108,7 +112,13 @@ server.tool(
 // 启动服务器
 async function main() {
   try {
-    logger.info("正在启动Google搜索MCP服务器...");
+    logger.info("正在启动Kagi搜索MCP服务器...");
+
+    // 检查环境变量
+    if (!process.env.KAGI_TOKEN) {
+      logger.error("KAGI_TOKEN 环境变量未设置。请在 .env 文件中设置你的 Kagi token。");
+      process.exit(1);
+    }
 
     // 初始化全局浏览器实例
     logger.info("正在初始化全局浏览器实例...");
@@ -148,7 +158,7 @@ async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
 
-    logger.info("Google搜索MCP服务器已启动，等待连接...");
+    logger.info("Kagi搜索MCP服务器已启动，等待连接...");
 
     // 设置进程退出时的清理函数
     process.on("exit", async () => {

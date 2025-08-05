@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
+import { config } from "dotenv";
 import { Command } from "commander";
-import { googleSearch, getGoogleSearchPageHtml } from "./search.js";
+import { kagiSearch, getKagiSearchPageHtml } from "./search.js";
 import { CommandOptions } from "./types.js";
+
+// 加载环境变量
+config();
 
 // 获取包信息
 import packageJson from "../package.json" with { type: "json" };
@@ -12,8 +16,8 @@ const program = new Command();
 
 // 配置命令行选项
 program
-  .name("google-search")
-  .description("基于 Playwright 的 Google 搜索 CLI 工具")
+  .name("kagi-search")
+  .description("基于 Playwright 的 Kagi 搜索 CLI 工具")
   .version(packageJson.version)
   .argument("<query>", "搜索关键词")
   .option("-l, --limit <number>", "结果数量限制", parseInt, 10)
@@ -28,7 +32,7 @@ program
     try {
       if (options.getHtml) {
         // 获取HTML
-        const htmlResult = await getGoogleSearchPageHtml(
+        const htmlResult = await getKagiSearchPageHtml(
           query,
           options,
           options.saveHtml || false,
@@ -55,7 +59,7 @@ program
         console.log(JSON.stringify(outputResult, null, 2));
       } else {
         // 执行常规搜索
-        const results = await googleSearch(query, options);
+        const results = await kagiSearch(query, options);
         
         // 输出结果
         console.log(JSON.stringify(results, null, 2));

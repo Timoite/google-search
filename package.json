@@ -1,13 +1,13 @@
 {
-  "name": "google-search-cli",
+  "name": "kagi-search-cli",
   "version": "1.0.0",
-  "description": "基于 Playwright 的 Google 搜索 CLI 工具",
+  "description": "基于 Playwright 的 Kagi 搜索 CLI 工具",
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist//src/index.d.ts",
   "bin": {
-    "google-search": "./bin/google-search",
-    "google-search-mcp": "./bin/google-search-mcp"
+    "kagi-search": "./bin/kagi-search",
+    "kagi-search-mcp": "./bin/kagi-search-mcp"
   },
   "scripts": {
     "build": "tsc",
@@ -20,19 +20,21 @@
     "debug:build": "npm run build && node dist/src/index.js --no-headless \"playwright typescript\"",
     "link": "npm link",
     "clean": "node -e \"const fs = require('fs'); const path = require('path'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true, force: true });\"",
+    "clean:all": "bash scripts/clean.sh",
+    "clean:full": "bash scripts/clean.sh --full",
     "mcp": "ts-node src/mcp-server.ts",
     "mcp:build": "npm run build && node dist/src/mcp-server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/web-agent-master/google-search.git"
+    "url": "git+https://github.com/web-agent-master/kagi-search.git"
   },
-  "homepage": "https://github.com/web-agent-master/google-search#readme",
+  "homepage": "https://github.com/web-agent-master/kagi-search#readme",
   "bugs": {
-    "url": "https://github.com/web-agent-master/google-search/issues"
+    "url": "https://github.com/web-agent-master/kagi-search/issues"
   },
   "keywords": [
-    "google",
+    "kagi",
     "search",
     "cli",
     "playwright",
@@ -44,13 +46,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.13.9",
+    "jsdom": "^26.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.2",
-    "jsdom": "^26.0.0"
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.1",
     "commander": "^13.1.0",
+    "dotenv": "^17.2.1",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
     "playwright": "^1.50.1",
