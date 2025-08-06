@@ -138,3 +138,5 @@ I've only tested this with Cherry studio, so any update on typical mcp clients l
 This project is a fork of google-search, and I have remixed it mainly for personal use as a passionate Kagi fan. I am not a professional programmer, and this is still a work in progress, so any contributions would be appreciated.
 
 If this project violates any rights of Kagi, please inform me, and I will take it down if I receive such a message. That said, due to the nature of the project, it cannot tolerate heavy usage, and I have not tested it beyond my regular personal searching purposes. As long as you use it in a regular way like me, it should not be an issue.
+
+The next step is to suppport quick answer and !bang to allow the tool search more freely & accurately without posting too much cost on Kagi.
