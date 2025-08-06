@@ -1,25 +1,8 @@
 # Kagi Search Tool
 
-A Playwright-based Node.js tool that provides access to Kagi search results. Kagi is a privacy-focused, ad-free search engine that delivers high-quality search results. This tool can be used directly as a command-line tool or as a Model Context Protocol (MCP) server to provide real-time search capabilities to AI assistants like Claude.
+A Playwright-based Node.js tool that provides access to Kagi search results, modified from web-agent-master's google-search. 
 
-[![Star History Chart](https://api.star-history.com/svg?repos=web-agent-master/kagi-search&type=Date)](https://star-history.com/#web-agent-master/kagi-search&Date)
-
-[中文文档](README.zh-CN.md)
-
-## Key Features
-
-- **Kagi Search Integration**: Access high-quality, ad-free search results from Kagi
-- **Privacy-Focused**: Leverages Kagi's privacy-first approach to search
-- **Token-Based Authentication**: Secure access using your Kagi search token
-- **Advanced Browser Automation**:
-  - Intelligent browser fingerprint management that simulates real user behavior
-  - Automatic saving and restoration of browser state
-  - Smart headless/headed mode switching when needed
-  - Randomization of device and locale settings
-- **Raw HTML Retrieval**: Ability to fetch the raw HTML of search result pages for analysis
-- **Page Screenshot**: Automatically captures and saves a full-page screenshot when saving HTML content
-- **MCP Server Integration**: Provides real-time search capabilities to AI assistants like Claude
-- **Completely Open Source and Free**: All code is open source with no usage restrictions
+Kagi is a privacy-focused, ad-free search engine that delivers high-quality search results. This tool can be used directly as a command-line tool or as a Model Context Protocol (MCP) server to provide real-time search capabilities to AI assistants like Claude.
 
 ## Technical Features
 
@@ -37,11 +20,14 @@ A Playwright-based Node.js tool that provides access to Kagi search results. Kag
 
 ## Prerequisites
 
+NOTE: This tool assumes you have a paid plan from kagi.com!
+
 Before using this tool, you need to obtain a Kagi search token:
 
-1. Visit [Kagi.com](https://kagi.com) and create an account
-2. Navigate to your account settings to find your search token
-3. Keep this token secure as it provides access to your Kagi search quota
+1. Visit [Kagi.com](https://kagi.com) and log in to your account
+2. On the main page, click on the hamburger icon on the top right corner, navigate to "Session Link" below the pop-up menu, click "Copy".
+3. Paste your Session link to a safe place. It may look like https://kagi.com/search?token=xxxx, where "xxxx" refers to your unique token. Copy this token for later use. Please follow Kagi's rules and keep this token secure as it provides access to your Kagi search quota. 
+4. Clone the 
 
 ## Installation
 
@@ -49,6 +35,11 @@ Before using this tool, you need to obtain a Kagi search token:
 # Install from source
 git clone https://github.com/web-agent-master/kagi-search.git
 cd kagi-search
+
+# Create a .env file and fill in your kagi token. 
+echo "KAGI_TOKEN={YOUR_KAGI_TOKEN_HERE}" > .env
+# Change YOUR_KAGI_TOKEN_HERE to your token
+
 # Install dependencies
 npm install
 # Or using yarn
@@ -71,22 +62,6 @@ yarn link
 pnpm link
 ```
 
-## Setup
-
-Before using the tool, you need to set up your Kagi token:
-
-1. **Create a `.env` file** in the project root:
-```bash
-cp .env.example .env
-```
-
-2. **Edit the `.env` file** and add your Kagi token:
-```env
-KAGI_TOKEN=your_actual_kagi_token_here
-```
-
-3. **Keep your token secure**: Never commit your `.env` file to version control.
-
 ## ⚠️ Security Considerations
 
 **Before uploading to GitHub or sharing this project:**
@@ -95,9 +70,9 @@ KAGI_TOKEN=your_actual_kagi_token_here
 2. **Verify .gitignore**: Ensure sensitive files are properly excluded
 3. **Check for sensitive data**: Never commit `.env` files or browser state files
 
-See [SECURITY.md](SECURITY.md) for detailed security guidelines.
-
 ### Windows Environment Notes
+
+NOTE: I've only tested this mcp server on mac. The below instruction comes from the original repository "google-search".
 
 This tool has been specially adapted for Windows environments:
 
@@ -120,23 +95,23 @@ kagi-search --limit 5 --timeout 60000 --no-headless "search keywords"
 # Or using npx
 npx kagi-search-cli "search keywords"
 
-# Run in development mode
+# Run in development mode, not tested
 pnpm dev "search keywords"
 
-# Run in debug mode (showing browser interface)
+# Run in debug mode (showing browser interface), not tested
 pnpm debug "search keywords"
 
-# Get raw HTML of search result page
+# Get raw HTML of search result page, not tested
 kagi-search "search keywords" --get-html
 
-# Get HTML and save to file
+# Get HTML and save to file, not tested
 kagi-search "search keywords" --get-html --save-html
 
-# Get HTML and save to specific file
+# Get HTML and save to specific file, not tested
 kagi-search "search keywords" --get-html --save-html --html-output "./output.html"
 ```
 
-#### Command Line Options
+#### Command Line Options (not tested)
 
 - `-l, --limit <number>`: Result count limit (default: 10)
 - `-t, --timeout <number>`: Timeout in milliseconds (default: 60000)
@@ -153,53 +128,30 @@ kagi-search "search keywords" --get-html --save-html --html-output "./output.htm
 
 ```json
 {
-  "query": "deepseek",
+  "query": "youtube",
   "results": [
     {
-      "title": "DeepSeek",
-      "link": "https://www.deepseek.com/",
-      "snippet": "DeepSeek-R1 is now live and open source, rivaling OpenAI's Model o1. Available on web, app, and API. Click for details. Into ..."
+      "title": "YouTube",
+      "link": "https://www.youtube.com/",
+      "snippet": ""
     },
     {
-      "title": "DeepSeek",
-      "link": "https://www.deepseek.com/",
-      "snippet": "DeepSeek-R1 is now live and open source, rivaling OpenAI's Model o1. Available on web, app, and API. Click for details. Into ..."
+      "title": "💭 Copyparty - YouTube",
+      "link": "https://waylonwalker.com//thoughts-767",
+      "snippet": ""
     },
     {
-      "title": "deepseek-ai/DeepSeek-V3",
-      "link": "https://github.com/deepseek-ai/DeepSeek-V3",
-      "snippet": "We present DeepSeek-V3, a strong Mixture-of-Experts (MoE) language model with 671B total parameters with 37B activated for each token."
-    }
-    // More results...
+      "title": "YouTube - Wikipedia",
+      "link": "https://en.wikipedia.org/wiki/YouTube",
+      "snippet": ""
+    },
+    {
+      "title": "YouTube Kids",
+      "link": "https://www.youtubekids.com/?hl=en-GB",
+      "snippet": ""
+    },
+    // more results...
   ]
-}
-```
-
-#### HTML Output Example
-
-When using the `--get-html` option, the output will include information about the HTML content:
-
-```json
-{
-  "query": "playwright automation",
-  "url": "https://kagi.com/search?q=playwright%20automation",
-  "originalHtmlLength": 891733,
-  "cleanedHtmlLength": 356789,
-  "htmlPreview": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\">..."
-}
-```
-
-If you also use the `--save-html` option, the output will include the path where the HTML was saved:
-
-```json
-{
-  "query": "playwright automation",
-  "url": "https://kagi.com/search?q=playwright%20automation",
-  "originalHtmlLength": 892241,
-  "cleanedHtmlLength": 358976,
-  "savedPath": "./kagi-search-2025-04-06T03-30-06-852Z.html",
-  "screenshotPath": "./kagi-search-2025-04-06T03-30-06-852Z.png",
-  "htmlPreview": "<!DOCTYPE html><html lang=\"en\">..."
 }
 ```
 
@@ -214,7 +166,7 @@ pnpm build
 
 #### Integration with Claude Desktop
 
-1. **Ensure your `.env` file is set up** with your Kagi token (see Setup section above)
+1. **Ensure your `.env` file is set up** with your Kagi token (see Prerequisites & Installation section above)
 
 2. Edit the Claude Desktop configuration file:
    - Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -229,7 +181,7 @@ pnpm build
   "mcpServers": {
     "kagi-search": {
       "command": "npx",
-      "args": ["kagi-search-mcp"]
+      "args": ["kagi-search"]
     }
   }
 }
@@ -244,7 +196,7 @@ For Windows environments, you can also use the following configurations:
   "mcpServers": {
     "kagi-search": {
       "command": "cmd.exe",
-      "args": ["/c", "npx", "kagi-search-mcp"]
+      "args": ["/c", "npx", "kagi-searc"]
     }
   }
 }
@@ -257,7 +209,7 @@ For Windows environments, you can also use the following configurations:
   "mcpServers": {
     "kagi-search": {
       "command": "node",
-      "args": ["C:/path/to/your/kagi-search/dist/src/mcp-server.js"]
+      "args": ["C:/path/to/your/kagi-search/dist/src/mcp-server.ts"]
     }
   }
 }

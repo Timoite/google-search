@@ -19,8 +19,8 @@ let globalBrowser: Browser | undefined = undefined;
 
 // 创建MCP服务器实例
 const server = new McpServer({
-  name: "kagi-search-server",
-  version: "1.0.0",
+  name: "kagi-search",
+  version: "0.1.0",
 });
 
 // 注册Kagi搜索工具
