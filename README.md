@@ -1,11 +1,11 @@
-
-<img width="1852" height="1738" alt="CleanShot 2025-08-06 at 16 05 16@2x" src="https://github.com/user-attachments/assets/35c7300f-6e5f-4d08-a298-f3ad2482fc5e" />
-
 # Kagi Search MCP
 
 A Playwright-based Node.js tool that execute Kagi searches without API access. Suitable for people with a paid Kagi plan for a better web search experience.
 
 Kagi is a privacy-focused, ad-free search engine that delivers high-quality search results. This tool can be used directly as a command-line tool or as a Model Context Protocol (MCP) server to provide real-time search capabilities to AI assistants like Claude.
+
+
+<img width="1852" height="1738" alt="CleanShot 2025-08-06 at 16 05 16@2x" src="https://github.com/user-attachments/assets/35c7300f-6e5f-4d08-a298-f3ad2482fc5e" />
 
 ## Prerequisites
 
