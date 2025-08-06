@@ -1,4 +1,4 @@
-# Kagi Search Tool
+# Kagi Search MCP
 
 A Playwright-based Node.js tool that execute Kagi searches without API access. Suitable for people with a paid Kagi plan for a better web search experience.
 
@@ -13,7 +13,6 @@ Before using this tool, you need to obtain a Kagi search token:
 1. Visit [Kagi.com](https://kagi.com) and log in to your account
 2. On the main page, click on the hamburger icon on the top right corner, navigate to "Session Link" below the pop-up menu, click "Copy".
 3. Paste your Session link to a safe place. It may look like https://kagi.com/search?token=xxxx, where "xxxx" refers to your unique token. Copy this token for later use. Please follow Kagi's rules and keep this token secure as it provides access to your Kagi search quota. 
-4. Clone the 
 
 ## Installation
 
