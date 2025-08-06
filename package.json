@@ -23,7 +23,12 @@
     "clean:all": "bash scripts/clean.sh",
     "clean:full": "bash scripts/clean.sh --full",
     "mcp": "ts-node src/mcp-server.ts",
-    "mcp:build": "npm run build && node dist/src/mcp-server.js"
+    "mcp:build": "npm run build && node dist/src/mcp-server.js",
+    "test:env": "ts-node check-env.ts",
+    "test:mcp": "ts-node test-mcp.ts",
+    "test:mcp:full": "ts-node test-mcp.ts full",
+    "test:all": "npm run test:env && npm run test:mcp",
+    "validate:mcp": "ts-node validate-mcp.ts"
   },
   "repository": {
     "type": "git",
