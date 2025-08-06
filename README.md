@@ -120,7 +120,7 @@ I've only tested this with Cherry studio, so any update on typical mcp clients l
     "kagi-search": {
       "command": "node",
       "args": [
-        "your/path/tp/kagi-search-mcp/dist/src/mcp-server.js"
+        "your/path/to/kagi-search-mcp/dist/src/mcp-server.js"
       ],
       "env": {
         "KAGI_TOKEN": "your_kagi_token_here"
